@@ -15,3 +15,16 @@ GET http://localhost:8080/api/users/1/projects
 ### Récupérer les tâches d'un utilisateur par son ID
 GET http://localhost:8080/api/users/1/tasks
 
+### Créer un nouveau projet
+POST http://localhost:8080/api/projects
+Content-Type: application/json
+
+{
+  "name": "Course de la semaine",
+  "creator": {
+    "id": 1
+  }
+}
+
+### Récupérer les tâches d'un projet par son ID
+GET http://localhost:8080/api/projects/1

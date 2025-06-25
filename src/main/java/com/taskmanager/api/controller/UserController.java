@@ -36,7 +36,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}/projects")
-    public ResponseEntity<Set<Project>> getAllUserProjects(@PathVariable Long id) {
+    public ResponseEntity<Set<Project>> getAllProjectsOfUser(@PathVariable Long id) {
         Set<Project> projects = userService.getUserById(id)
                 .map(User::getProjects)
                 .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
