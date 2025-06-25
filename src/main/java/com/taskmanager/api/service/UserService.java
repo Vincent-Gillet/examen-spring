@@ -1,5 +1,7 @@
 package com.taskmanager.api.service;
 
+import com.taskmanager.api.dto.UserDTO;
+import com.taskmanager.api.dto.UserGetDTO;
 import com.taskmanager.api.model.User;
 import com.taskmanager.api.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -41,5 +43,20 @@ public class UserService {
     public boolean existsUserById(Long id) {
         return userRepository.existsById(id);
     }
+
+    public UserGetDTO toDTO(User user) {
+        if (user == null) return null;
+        return new UserGetDTO(
+                user.getUsername()
+        );
+    }
+
+    public User toEntity(UserDTO dto) {
+        if (dto == null) return null;
+        User user = new User();
+        user.setUsername(dto.getUsername());
+        return user;
+    }
+
 
 }

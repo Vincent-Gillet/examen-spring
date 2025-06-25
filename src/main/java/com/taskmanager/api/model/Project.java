@@ -24,9 +24,9 @@ public class Project {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    User creator;
+    private User creator;
 
-    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL,  fetch = FetchType.LAZY)
     private Set<Task> task = new HashSet<>();
 
 }

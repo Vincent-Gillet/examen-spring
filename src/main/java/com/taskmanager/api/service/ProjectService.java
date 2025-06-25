@@ -1,6 +1,8 @@
 package com.taskmanager.api.service;
 
+import com.taskmanager.api.dto.*;
 import com.taskmanager.api.model.Project;
+import com.taskmanager.api.model.User;
 import com.taskmanager.api.repository.ProjectRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -8,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -40,6 +44,43 @@ public class ProjectService {
 
     public boolean existsProjectById(Long id) {
         return projectRepository.existsById(id);
+    }
+
+    public Set<ProjectGetDTO> getAllProjectsOfUser(Long userId) {
+        return projectRepository.findAllByCreator_Id(userId)
+                .stream()
+                .map(this::toDTO)
+                .collect(Collectors.toSet());
+    }
+
+    public ProjectGetDTO toDTO(Project project) {
+        if (project == null) return null;
+        return new ProjectGetDTO(
+                project.getName()
+        );
+    }
+
+    public Project toEntity(ProjectDTO dto) {
+        if (dto == null) return null;
+        Project project = new Project();
+        project.setName(dto.getName());
+        return project;
+    }
+
+
+    public ProjectCreateDTO toDTOCreate(Project project) {
+        if (project == null) return null;
+        ProjectCreateDTO dto = new ProjectCreateDTO();
+        dto.setId(project.getId());
+        dto.setName(project.getName());
+        User creator = project.getCreator();
+        if (creator != null) {
+            UserDTO userDTO = new UserDTO();
+            userDTO.setId(creator.getId());
+            userDTO.setUsername(creator.getUsername());
+            dto.setCreator(userDTO);
+        }
+        return dto;
     }
 
 }

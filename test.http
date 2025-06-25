@@ -27,4 +27,30 @@ Content-Type: application/json
 }
 
 ### Récupérer les tâches d'un projet par son ID
-GET http://localhost:8080/api/projects/1
+GET http://localhost:8080/api/projects/5
+
+### Récupérer les tâches avec leurs détails d'un projet par son ID
+GET http://localhost:8080/api/projects/1/tasks
+
+### Créer une nouvelle tâche
+POST http://localhost:8080/api/tasks
+Content-Type: application/json
+
+{
+  "title": "tâche 4",
+  "status": 0,
+  "project": {
+    "id": 5
+  },
+  "assignee": {
+    "id": 1
+  }
+}
+
+### Modifier le status une tâche existante
+PATCH http://localhost:8080/api/tasks/1
+Content-Type: application/json
+
+{
+  "status": 1
+}
