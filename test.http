@@ -1,0 +1,17 @@
+### Créer un nouvel utilisateur
+POST http://localhost:8080/api/users
+Content-Type: application/json
+
+{
+  "username": "JohnDoe"
+}
+
+### Récupérer un utilisateur par son ID
+GET http://localhost:8080/api/users/1
+
+### Récupérer les projets d'un utilisateur par son ID
+GET http://localhost:8080/api/users/1/projects
+
+### Récupérer les tâches d'un utilisateur par son ID
+GET http://localhost:8080/api/users/1/tasks
+
