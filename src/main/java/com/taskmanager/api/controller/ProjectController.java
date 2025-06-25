@@ -1,18 +1,14 @@
 package com.taskmanager.api.controller;
 
-import com.taskmanager.api.dto.ProjectCreateDTO;
-import com.taskmanager.api.dto.ProjectGetTaskDTO;
-import com.taskmanager.api.dto.TaskDTO;
+import com.taskmanager.api.dto.*;
 import com.taskmanager.api.model.Project;
-import com.taskmanager.api.model.Task;
-import com.taskmanager.api.model.User;
 import com.taskmanager.api.service.ProjectService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Set;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -26,13 +22,6 @@ public class ProjectController {
 
     private final ProjectService projectService;
 
-
-/*    @PostMapping
-    public ResponseEntity<Project> createProject(@RequestBody Project project) {
-        Project createdProject = projectService.saveProject(project);
-        return new ResponseEntity<>(createdProject,HttpStatus.CREATED);
-    }*/
-
     @PostMapping
     public ResponseEntity<ProjectCreateDTO> createProject(@RequestBody Project project) {
         Project createdProject = projectService.saveProject(project);
@@ -45,22 +34,28 @@ public class ProjectController {
         return projectService.getProjectById(id)
                 .map(project -> {
                     project.getTask().size();
-                    Set<TaskDTO> taskDTOs = project.getTask().stream()
+                    List<TaskDTO> taskDTOs = project.getTask().stream()
                             .map(task -> new TaskDTO(task.getId(), task.getTitle()))
-                            .collect(Collectors.toSet());
+                            .collect(Collectors.toList());
                     ProjectGetTaskDTO dto = new ProjectGetTaskDTO(project.getName(), taskDTOs);
                     return ResponseEntity.ok(dto);
                 })
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/{id}/tasks")
-    public ResponseEntity<Set<?>> getAllTasksAndDetailsOfProject(@PathVariable Long id) {
-        Set<Task> tasks = projectService.getProjectById(id)
-                .map(Project::getTask)
-                .orElseThrow(() -> new RuntimeException("Projet non trouvé"));
-        return ResponseEntity.ok(tasks);
-    }
 
+    @GetMapping("/{id}/tasks")
+    public ResponseEntity<ProjectGetTaskDetailsDTO> getAllTasksAndDetailsOfProject(@PathVariable Long id) {
+        return projectService.getProjectById(id)
+                .map(project -> {
+                    project.getTask().size();
+                    List<TaskGetDTO> taskDTOs = project.getTask().stream()
+                            .map(task -> new TaskGetDTO(task.getTitle(), task.getStatus()))
+                            .collect(Collectors.toList());
+                    ProjectGetTaskDetailsDTO dto = new ProjectGetTaskDetailsDTO(taskDTOs);
+                    return ResponseEntity.ok(dto);
+                })
+                .orElse(ResponseEntity.notFound().build());
+    }
 
 }

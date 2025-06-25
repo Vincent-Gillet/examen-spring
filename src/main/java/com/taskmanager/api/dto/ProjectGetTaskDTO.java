@@ -4,12 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Set;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProjectGetTaskDTO {
     private String name;
-    private Set<TaskDTO> tasks;
+    private List<TaskDTO> tasks;
 }

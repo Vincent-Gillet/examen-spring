@@ -6,8 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -26,7 +26,7 @@ public class Project {
     @JoinColumn(name = "user_id")
     private User creator;
 
-    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL,  fetch = FetchType.LAZY)
-    private Set<Task> task = new HashSet<>();
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Task> task = new ArrayList<>();
 
 }

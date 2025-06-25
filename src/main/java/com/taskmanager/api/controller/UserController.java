@@ -1,21 +1,15 @@
 package com.taskmanager.api.controller;
 
-import com.taskmanager.api.dto.ProjectDTO;
-import com.taskmanager.api.dto.ProjectGetDTO;
-import com.taskmanager.api.dto.UserDTO;
-import com.taskmanager.api.dto.UserGetDTO;
-import com.taskmanager.api.model.Project;
-import com.taskmanager.api.model.Task;
+import com.taskmanager.api.dto.*;
 import com.taskmanager.api.model.User;
 import com.taskmanager.api.service.ProjectService;
 import com.taskmanager.api.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Set;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -28,9 +22,6 @@ import java.util.stream.Collectors;
 public class UserController {
 
     private final UserService userService;
-
-    private final ProjectService projectService;
-
 
     @PostMapping
     public ResponseEntity<User> createUser(@RequestBody User user) {
@@ -46,18 +37,31 @@ public class UserController {
     }
 
     @GetMapping("/{id}/projects")
-    @Transactional(readOnly = true)
-    public ResponseEntity<Set<ProjectGetDTO>> getAllProjectsOfUser(@PathVariable Long id) {
-        Set<ProjectGetDTO> projectDTOs = projectService.getAllProjectsOfUser(id);
-        return ResponseEntity.ok(projectDTOs);
+    public ResponseEntity<UserGetProjectDTO> getAllProjectsOfUser(@PathVariable Long id) {
+        return userService.getUserById(id)
+                .map(user -> {
+                    user.getProjects().size();
+                    List<ProjectGetDTO> projectDTOs = user.getProjects().stream()
+                            .map(project -> new ProjectGetDTO(project.getName()))
+                            .collect(Collectors.toList());
+                    UserGetProjectDTO dto = new UserGetProjectDTO(user.getUsername(), projectDTOs);
+                    return ResponseEntity.ok(dto);
+                })
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping("/{id}/tasks")
-    public ResponseEntity<Set<Task>> getAllUserTasks(@PathVariable Long id) {
-        Set<Task> projects = userService.getUserById(id)
-                .map(User::getTask)
-                .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
-        return ResponseEntity.ok(projects);
+    public ResponseEntity<UserGetTaskDTO> getAllTasksOfUser(@PathVariable Long id) {
+        return userService.getUserById(id)
+                .map(user -> {
+                    user.getTask().size();
+                    List<TaskDTO> taskDTOs = user.getTask().stream()
+                            .map(task -> new TaskDTO(task.getId(), task.getTitle()))
+                            .collect(Collectors.toList());
+                    UserGetTaskDTO dto = new UserGetTaskDTO(user.getUsername(), taskDTOs);
+                    return ResponseEntity.ok(dto);
+                })
+                .orElse(ResponseEntity.notFound().build());
     }
 
 

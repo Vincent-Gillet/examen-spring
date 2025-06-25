@@ -30,7 +30,7 @@ Content-Type: application/json
 GET http://localhost:8080/api/projects/5
 
 ### Récupérer les tâches avec leurs détails d'un projet par son ID
-GET http://localhost:8080/api/projects/1/tasks
+GET http://localhost:8080/api/projects/5/tasks
 
 ### Créer une nouvelle tâche
 POST http://localhost:8080/api/tasks

@@ -1,6 +1,5 @@
 package com.taskmanager.api.service;
 
-import com.taskmanager.api.dto.UserDTO;
 import com.taskmanager.api.dto.UserGetDTO;
 import com.taskmanager.api.model.User;
 import com.taskmanager.api.repository.UserRepository;
@@ -50,13 +49,5 @@ public class UserService {
                 user.getUsername()
         );
     }
-
-    public User toEntity(UserDTO dto) {
-        if (dto == null) return null;
-        User user = new User();
-        user.setUsername(dto.getUsername());
-        return user;
-    }
-
 
 }

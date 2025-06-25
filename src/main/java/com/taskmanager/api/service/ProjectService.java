@@ -10,8 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -44,13 +42,6 @@ public class ProjectService {
 
     public boolean existsProjectById(Long id) {
         return projectRepository.existsById(id);
-    }
-
-    public Set<ProjectGetDTO> getAllProjectsOfUser(Long userId) {
-        return projectRepository.findAllByCreator_Id(userId)
-                .stream()
-                .map(this::toDTO)
-                .collect(Collectors.toSet());
     }
 
     public ProjectGetDTO toDTO(Project project) {

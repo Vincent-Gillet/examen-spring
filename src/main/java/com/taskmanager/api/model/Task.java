@@ -1,6 +1,5 @@
 package com.taskmanager.api.model;
 
-
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;

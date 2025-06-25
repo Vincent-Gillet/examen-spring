@@ -1,14 +1,13 @@
 package com.taskmanager.api.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -24,8 +23,10 @@ public class User {
     private String username;
 
     @OneToMany(mappedBy = "assignee", cascade = CascadeType.ALL)
-    private Set<Task> task = new HashSet<>();
+    private List<Task> task = new ArrayList<>();
 
     @OneToMany(mappedBy = "creator", cascade = CascadeType.ALL)
-    private Set<Project> projects = new HashSet<>();
+    private List<Project> projects = new ArrayList<>();
+
+
 }
